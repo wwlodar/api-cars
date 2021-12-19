@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
-
 import environ
 
 env = environ.Env(
@@ -48,7 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cars.apps.CarsConfig',
     'rest_framework',
-
 ]
 
 MIDDLEWARE = [
@@ -87,14 +85,7 @@ WSGI_APPLICATION = 'api_cars.wsgi.application'
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ['API_CARS'],
-        'USER': os.environ['API_USER'],
-        'PASSWORD': os.environ['API_PASSWORD'],
-        'HOST': os.environ['API_HOST'],
-        'PORT': os.environ['API_PORT'],
-    }
+    'default': env.db()
 }
 
 

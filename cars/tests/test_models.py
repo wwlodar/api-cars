@@ -27,3 +27,7 @@ class CarTest(TestCase):
         rating2 = Rating.objects.create(rate=5, car_id=car1)
 
         self.assertEqual(car1.rating_count(), 2)
+
+    def test_str(self):
+        car1 = Car.objects.create(make='Ford', model='Focus')
+        self.assertIn(str(car1), '<Car: Focus made by Ford>')

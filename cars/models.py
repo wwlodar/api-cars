@@ -18,6 +18,9 @@ class Car(models.Model):
     def rating_count(self):
         return self.rating_set.aggregate(Count('rate'))['rate__count']
 
+    def __str__(self):
+        return f'{self.model} made by {self.make}'
+
 
 class Rating(models.Model):
     rate = IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])

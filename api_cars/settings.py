@@ -12,15 +12,24 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+
+import environ
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+environ.Env.read_env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$0_r@c0j7z8dh1m8!__o12!ggm^bi*)5=xqk8c$$tsr5&p-jm6'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cars.apps.CarsConfig',
     'rest_framework',
+
 ]
 
 MIDDLEWARE = [
@@ -79,11 +89,11 @@ WSGI_APPLICATION = 'api_cars.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ['api_cars'],
-        'USER': os.environ['api_user'],
-        'PASSWORD': os.environ['api_password'],
-        'HOST': os.environ['api_host'],
-        'PORT': os.environ['api_port'],
+        'NAME': os.environ['API_CARS'],
+        'USER': os.environ['API_USER'],
+        'PASSWORD': os.environ['API_PASSWORD'],
+        'HOST': os.environ['API_HOST'],
+        'PORT': os.environ['API_PORT'],
     }
 }
 

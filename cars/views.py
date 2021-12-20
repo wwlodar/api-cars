@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.response import Response
 from .utils import get_data
@@ -6,7 +5,6 @@ from django.shortcuts import get_object_or_404
 from .models import Car, Rating
 from .serializers import CarSerializer, RatingSerializer, CarListSerializer, CarPopularSerializer
 from rest_framework import status
-
 from django.db.models import Count
 
 

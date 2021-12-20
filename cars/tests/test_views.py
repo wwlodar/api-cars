@@ -104,8 +104,8 @@ class TestGetPopular(APITestCase):
         self.assertEqual(200, response.status_code)
 
         response_data = json.loads(response.content)
-        self.assertEqual([{'make': 'Ford', 'model': 'Focus', 'rating_count': 2},
-                          {'make': 'Ford', 'model': 'Fiesta', 'rating_count': 1}], response_data)
+        self.assertEqual([{'make': 'Ford', 'model': 'Focus', 'rates_number': 2},
+                          {'make': 'Ford', 'model': 'Fiesta', 'rates_number': 1}], response_data)
 
 
 class TestPostRating(APITestCase):

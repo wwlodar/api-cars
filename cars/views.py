@@ -42,9 +42,9 @@ class CarViewSet(viewsets.ViewSet):
     def perform_create(self, serializer):
         serializer.save()
 
-    def destroy(self, request, pk=None):
+    def destroy(self, request, id=None):
         queryset = Car.objects.all()
-        car = get_object_or_404(queryset, pk=pk)
+        car = get_object_or_404(queryset, id=id)
         instance = car
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)

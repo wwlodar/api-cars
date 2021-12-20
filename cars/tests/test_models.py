@@ -19,7 +19,7 @@ class CarTest(TestCase):
     def test_no_ratings(self):
         car1 = Car.objects.create(make='Ford', model='Focus')
         self.assertEqual(car1.avg_rating(), None)
-        self.assertEqual(car1.rating_count(), 0)
+        self.assertEqual(car1.rates_number(), 0)
 
     def test_rating_count(self):
         car1 = Car.objects.create(make='Ford', model='Focus')

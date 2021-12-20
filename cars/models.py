@@ -15,7 +15,7 @@ class Car(models.Model):
     def avg_rating(self):
         return self.rating_set.aggregate(Avg('rate'))['rate__avg']
 
-    def rating_count(self):
+    def rates_number(self):
         return self.rating_set.aggregate(Count('rate'))['rate__count']
 
     def __str__(self):

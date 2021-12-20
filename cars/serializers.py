@@ -19,14 +19,14 @@ class CarListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Car
-        fields = ['make', 'model', 'avg_rating']
+        fields = ['id', 'make', 'model', 'avg_rating']
 
 class CarPopularSerializer(serializers.ModelSerializer):
-    rating_count = serializers.SerializerMethodField()
+    rates_number = serializers.SerializerMethodField()
 
-    def get_rating_count(self, obj):
-        return obj.rating_count()
+    def get_rates_number(self, obj):
+        return obj.rates_number()
 
     class Meta:
         model = Car
-        fields = ['make', 'model', 'rating_count']
+        fields = ['id', 'make', 'model', 'rates_number']

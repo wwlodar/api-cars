@@ -5,6 +5,7 @@ import json
 from ..models import Car, Rating
 from rest_framework.test import APIClient
 import mock
+
 class TestGetCar(APITestCase):
     def test_get_no_cars(self):
         response = self.client.get(reverse("car-list"))
@@ -35,7 +36,7 @@ class TestPostCar(APITestCase):
         self.assertEqual(400, response.status_code)
 
         response_data = json.loads(response.content)
-        self.assertEqual({'message': 'Make does not exists'}, response_data)
+        self.assertEqual({'message': 'Make does not exist'}, response_data)
 
     @mock.patch('cars.views.get_data', return_value=[
         {'Make_ID': 492, 'Make_Name': 'FIAT', 'Model_ID': 3490, 'Model_Name': 'Freemont'}])
@@ -45,7 +46,7 @@ class TestPostCar(APITestCase):
         self.assertEqual(400, response.status_code)
 
         response_data = json.loads(response.content)
-        self.assertEqual({'message': 'Model does not exists'}, response_data)
+        self.assertEqual({'message': 'Model does not exist'}, response_data)
 
     @mock.patch('cars.views.get_data', return_value=[
         {'Make_ID': 492, 'Make_Name': 'FIAT', 'Model_ID': 3490, 'Model_Name': 'Freemont'}])
@@ -70,10 +71,19 @@ class TestPostCar(APITestCase):
 
 class TestDeleteCar(APITestCase):
     def test_delete_existing_car(self):
-        pass
+        car1 = Car.objects.create(make='Fiat', model='Freemont')
+        response = self.client.delete(reverse("car-detail", kwargs={'pk': car1.pk}))
+
+        self.assertEqual(204, response.status_code)
+        self.assertEqual(Car.objects.all().count(), 0)
 
     def test_delete_nonexisting_car(self):
-        pass
+        car1 = Car.objects.create(make='Fiat', model='Freemont')
+        response = self.client.delete(reverse("car-detail", kwargs={'pk': (car1.pk + 10)}))
+
+        self.assertEqual(404, response.status_code)
+        response_data = json.loads(response.content)
+        self.assertEqual({'detail': 'Not found.'}, response_data)
 
 class TestGetPopular(APITestCase):
     def test_get_no_cars(self):
@@ -100,10 +110,26 @@ class TestGetPopular(APITestCase):
 
 class TestPostRating(APITestCase):
     def test_post_nonexistent_car(self):
-        pass
+        car1 = Car.objects.create(make='Ford', model='Focus')
+        response = self.client.post("/rate/", {"car_id": (car1.pk + 10), "rate": 5})
+
+        self.assertEqual(400, response.status_code)
+        response_data = json.loads(response.content)
+        self.assertEqual({'car_id':
+                         ['Invalid pk ' + '"' + str(car1.pk + 10) + '"' + ' - object does not exist.']}, response_data)
 
     def test_incorrect_rate(self):
-        pass
+        car1 = Car.objects.create(make='Ford', model='Focus')
+        response = self.client.post("/rate/", {"car_id": car1.pk, "rate": 7})
+
+        self.assertEqual(400, response.status_code)
+        response_data = json.loads(response.content)
+        self.assertEqual({'rate': ['Ensure this value is less than or equal to 5.']}, response_data)
 
     def test_correct(self):
-        pass
+        car1 = Car.objects.create(make='Ford', model='Focus')
+        response = self.client.post("/rate/", {"car_id": (car1.pk), "rate": 5})
+
+        self.assertEqual(201, response.status_code)
+        response_data = json.loads(response.content)
+        self.assertEqual({'car_id': car1.pk, 'rate': 5}, response_data)

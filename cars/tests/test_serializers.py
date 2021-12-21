@@ -41,7 +41,7 @@ class TestCarListSerializer(TestCase):
     def test_contains_expected_fields(self):
         data = self.serializer.data
 
-        self.assertEqual(set(data.keys()), set(['make', 'model', 'avg_rating']))
+        self.assertEqual(set(data.keys()), set(['make', 'model', 'avg_rating', 'id']))
 
     def test_make_field_content(self):
         data = self.serializer.data
@@ -71,7 +71,7 @@ class TestCarPopularSerializer(TestCase):
     def test_contains_expected_fields(self):
         data = self.serializer.data
 
-        self.assertEqual(set(data.keys()), set(['make', 'model', 'rating_count']))
+        self.assertEqual(set(data.keys()), set(['make', 'model', 'rates_number', 'id']))
 
     def test_make_field_content(self):
         data = self.serializer.data
@@ -86,7 +86,7 @@ class TestCarPopularSerializer(TestCase):
     def test_rating_count_field_content(self):
         data = self.serializer.data
 
-        self.assertEqual(data['rating_count'], 0)
+        self.assertEqual(data['rates_number'], 0)
 
 
 class TestRatingSerializer(TestCase):

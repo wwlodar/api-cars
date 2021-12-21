@@ -24,8 +24,8 @@ class TestGetCar(APITestCase):
         self.assertEqual(200, response.status_code)
 
         response_data = json.loads(response.content)
-        self.assertEqual([{'avg_rating': 4.0, 'make': 'Ford', 'model': 'Focus'},
-                          {'avg_rating': None, 'make': 'Ford', 'model': 'Fiesta'}], response_data)
+        self.assertEqual([{'avg_rating': 4.0, 'id': car1.id, 'make': 'Ford', 'model': 'Focus'},
+                          {'avg_rating': None, 'id': car2.id, 'make': 'Ford', 'model': 'Fiesta'}], response_data)
 
 class TestPostCar(APITestCase):
 
@@ -72,14 +72,14 @@ class TestPostCar(APITestCase):
 class TestDeleteCar(APITestCase):
     def test_delete_existing_car(self):
         car1 = Car.objects.create(make='Fiat', model='Freemont')
-        response = self.client.delete(reverse("car-detail", kwargs={'pk': car1.pk}))
+        response = self.client.delete(reverse("car-detail", kwargs={'pk': car1.id}))
 
         self.assertEqual(204, response.status_code)
         self.assertEqual(Car.objects.all().count(), 0)
 
     def test_delete_nonexisting_car(self):
         car1 = Car.objects.create(make='Fiat', model='Freemont')
-        response = self.client.delete(reverse("car-detail", kwargs={'pk': (car1.pk + 10)}))
+        response = self.client.delete(reverse("car-detail", kwargs={'pk': (car1.id + 10)}))
 
         self.assertEqual(404, response.status_code)
         response_data = json.loads(response.content)
@@ -104,8 +104,8 @@ class TestGetPopular(APITestCase):
         self.assertEqual(200, response.status_code)
 
         response_data = json.loads(response.content)
-        self.assertEqual([{'make': 'Ford', 'model': 'Focus', 'rates_number': 2},
-                          {'make': 'Ford', 'model': 'Fiesta', 'rates_number': 1}], response_data)
+        self.assertEqual([{'id': 25, 'make': 'Ford', 'model': 'Focus', 'rates_number': 2},
+                          {'id': 26, 'make': 'Ford', 'model': 'Fiesta', 'rates_number': 1}], response_data)
 
 
 class TestPostRating(APITestCase):

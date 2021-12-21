@@ -21,12 +21,12 @@ class CarTest(TestCase):
         self.assertEqual(car1.avg_rating(), None)
         self.assertEqual(car1.rates_number(), 0)
 
-    def test_rating_count(self):
+    def test_rates_number(self):
         car1 = Car.objects.create(make='Ford', model='Focus')
         rating1 = Rating.objects.create(rate=3, car_id=car1)
         rating2 = Rating.objects.create(rate=5, car_id=car1)
 
-        self.assertEqual(car1.rating_count(), 2)
+        self.assertEqual(car1.rates_number(), 2)
 
     def test_str(self):
         car1 = Car.objects.create(make='Ford', model='Focus')
